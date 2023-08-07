@@ -30,7 +30,7 @@ router.post('/generateReport',auth.authenticateToken,(req,res,next)=>{
                         return res.status(500).json(err);
                     }
                     else{
-                        pdf.create(results).toFile('./generated_pdf/'+ generatedUuid+".pdf", function(err,results){
+                        pdf.create(results).toStream('./generated_pdf/'+ generatedUuid+".pdf", function(err,results){
                             if(err){
                                 console.log(err);
                                 return res.status(500).json(err);
@@ -66,7 +66,7 @@ router.post('/getPdf',auth.authenticateToken,(req,res,next)=>{
                         return res.status(500).json(err);
                     }
                     else{
-                        pdf.create(results).toFile('./generated_pdf/'+ orderDetails.uuid+".pdf", function(err,results){
+                        pdf.create(results).toStream('./generated_pdf/'+ orderDetails.uuid+".pdf", function(err,results){
                             if(err){
                                 
                                 return res.status(500).json(err);
