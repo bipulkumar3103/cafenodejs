@@ -12,13 +12,19 @@ var auth=require('../service/authentication');
 router.post('/generateReport',auth.authenticateToken,(req,res,next)=>{
     const generatedUuid=uuid.v1();
     const orderDetails=req.body;
+    console.log(orderDetails);
     var productDetailsReport=JSON.parse(orderDetails.productDetails);
+    console.log(productDetailsReport);
 
     var query="insert into bill(name,uuid,email,contactNumber,paymentMethod,total, productDetails,createdBy) values(?,?,?,?,?,?,?,?)";
     connection.query(query,[orderDetails.name,generatedUuid,orderDetails.email,orderDetails.contactNumber,orderDetails.paymentMethod,orderDetails.totalAmount,orderDetails.productDetails,res.locals.email],(err,results)=>{
         if(!err){
-            ejs.renderFile(path.join(__dirname,'','report.ejs'),{productDetails:productDetailsReport,name:orderDetails.name,
-                email:orderDetails.email,contactNumber:orderDetails.contactNumber,paymentMethod:orderDetails.paymentMethod,
+            ejs.renderFile(path.join(__dirname,'','report.ejs'),{
+                productDetails:productDetailsReport,
+                name:orderDetails.name,
+                email:orderDetails.email,
+                contactNumber:orderDetails.contactNumber,
+                paymentMethod:orderDetails.paymentMethod,
                 totalAmount:orderDetails.totalAmount},(err,results)=>{
                     if(err){
                         return res.status(500).json(err);
@@ -30,6 +36,7 @@ router.post('/generateReport',auth.authenticateToken,(req,res,next)=>{
                                 return res.status(500).json(err);
                             }
                             else{
+                                
                                 return res.status(200).json({uuid:generatedUuid});
                             }
                         })
@@ -42,7 +49,7 @@ router.post('/generateReport',auth.authenticateToken,(req,res,next)=>{
     })
 });
 
-router.get('/getPdf',auth.authenticateToken,(req,res,next)=>{
+router.post('/getPdf',auth.authenticateToken,(req,res,next)=>{
     const orderDetails=req.body;
     const pdfPath='./generated_pdf/'+orderDetails.uuid+'.pdf'
     if (fs.existsSync(pdfPath)){

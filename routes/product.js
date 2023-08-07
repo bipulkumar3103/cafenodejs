@@ -18,7 +18,7 @@ router.post('/add',auth.authenticateToken,checkRole.checkRole,(req,res,next)=>{
     })
 });
 router.get('/get',auth.authenticateToken,(req,res,next)=>{
-    var query=`select p.id,p.name,p.description,p.price,p.status,c.id as categordId,c.name as catergoryName 
+    var query=`select p.id,p.name,p.description,p.price,p.status,c.id as categoryId,c.name as categoryName 
     from product as p INNER JOIN category as c where p.categoryId=c.id`;
     connection.query(query,(err,results)=>{
         if(!err){
