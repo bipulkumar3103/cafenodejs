@@ -5,7 +5,7 @@ const connection=require('./connection');
 const userRoute= require('./routes/user');
 const categoryRoute=require('./routes/category');
 const productRoute=require('./routes/product');
-const billRoute=require('./routes/bill');
+const billRoute=require('./routes/bill2');
 const dashboardRoute=require('./routes/dashboard');
 
 
